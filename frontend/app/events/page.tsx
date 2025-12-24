@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Filter, Loader2, Sparkles } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import EventCard, { type HoverEffect } from "./components/EventCard";
 import RegistrationModal from "./components/RegistrationModal";
 import eventsConfig, { type BackgroundStyle, type LoadingStyle } from "./config";
@@ -135,9 +135,6 @@ export default function EventsPage({
   const [events, setEvents] = useState<Event[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [showFilters, setShowFilters] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
   
@@ -179,25 +176,8 @@ export default function EventsPage({
   }, []);
 
   useEffect(() => {
-    let filtered = events;
-
-    if (selectedCategory !== "All") {
-      filtered = filtered.filter((event) => event.category === selectedCategory);
-    }
-
-    if (searchQuery) {
-      filtered = filtered.filter(
-        (event) =>
-          event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          event.category.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    setFilteredEvents(filtered);
-  }, [searchQuery, selectedCategory, events]);
-
-  const categories = ["All", ...Array.from(new Set(events.map((e) => e.category)))];
+    setFilteredEvents(events);
+  }, [events]);
 
   const renderBackground = () => {
     switch (backgroundStyle) {
