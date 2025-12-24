@@ -2,7 +2,7 @@ import ScrollMask from "./components/ScrollEffect/scrollMask";
 import Navbar from "./components/NavBar/navbar";
 import About from "./components/About/about";
 import Speakers from "./components/Speakers/speakers";
-import Events from "./components/Events/events";
+import RadialEvents from "./components/RadialEvents/radialevents";
 import PlenarySessions from "./components/PlenarySession/plenary";
 import Workshops from "./components/Workshops/workshops";
 import Schedule from "./components/Schedule/schedule";
@@ -17,7 +17,7 @@ export default function Home() {
       <Navbar/>
       <About/>
       <Speakers/>
-      <Events/>
+      <RadialEvents/>
       <PlenarySessions/>
       <Workshops/>
       <Schedule/>

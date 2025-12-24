@@ -1,20 +1,7 @@
-  .radial-carousel-container {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='32' viewBox='0 0 80 32'%3E%3Crect width='80' height='32' rx='16' fill='black'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='monospace' font-size='14' font-weight='600'%3EDRAG%3C/text%3E%3C/svg%3E")
-      40 16, auto;
-  }
-  .cartoon-heading {
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #FFD700;
-    -webkit-text-stroke: 3px #000;
-    paint-order: stroke fill;
-    text-shadow: 
-      4px 4px 0px #000,
-      8px 8px 0px rgba(0,0,0,0.2);
-    letter-spacing: 4px;
-    transform: skew(-2deg);
-  }
-  .radial-carousel-container:active {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='32' viewBox='0 0 80 32'%3E%3Crect width='80' height='32' rx='16' fill='black'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='monospace' font-size='14' font-weight='600'%3EDRAG%3C/text%3E%3C/svg%3E")
-      40 16, auto;
-  }
+.radial-carousel-container {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="rgba(255,255,255,0.9)" stroke="rgba(0,0,0,0.3)" stroke-width="1"/><path d="M12 16 L8 16 M20 16 L24 16" stroke="rgba(0,0,0,0.6)" stroke-width="2" stroke-linecap="round"/><path d="M9 14 L6 16 L9 18 M23 14 L26 16 L23 18" fill="rgba(0,0,0,0.6)"/></svg>') 16 16, grab;
+}
+
+.radial-carousel-container:active {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="rgba(255,255,255,0.95)" stroke="rgba(0,0,0,0.5)" stroke-width="2"/><path d="M12 16 L8 16 M20 16 L24 16" stroke="rgba(0,0,0,0.8)" stroke-width="2.5" stroke-linecap="round"/><path d="M9 14 L6 16 L9 18 M23 14 L26 16 L23 18" fill="rgba(0,0,0,0.8)"/></svg>') 16 16, grabbing;
+}
