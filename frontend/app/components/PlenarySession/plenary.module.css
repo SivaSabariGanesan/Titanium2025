@@ -241,7 +241,7 @@
 
 
 @media (max-width: 380px) {
-  #section {
+  body {
     transform: scale(0.75);
     transform-origin: top left;
     width: 133.33vw;
