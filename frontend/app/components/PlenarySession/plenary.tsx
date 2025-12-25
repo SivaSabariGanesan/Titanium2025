@@ -202,7 +202,7 @@ export default function PlenarySessions({
         <div
           ref={scrollContainerRef}
           className={cn(
-            "flex gap-4 md:gap-8 pt-60 md:pt-64 pb-16 md:pb-32 pl-4 md:pl-8 pr-4 md:pr-8",
+            "flex gap-4 md:gap-8 pt-32 md:pt-40 lg:pt-48 2xl:pt-64 pb-16 md:pb-24 pl-4 md:pl-8 pr-4 md:pr-8",
             isMobile ? "flex-col items-center" : "items-center",
             styles.scrollContainer
           )}
@@ -211,7 +211,7 @@ export default function PlenarySessions({
             <div
               key={session.id}
               className={cn(
-                "plenary-card w-full md:w-[900px] rounded-2xl overflow-hidden",
+                "plenary-card w-full md:w-[85vw] lg:w-[900px] rounded-2xl overflow-hidden",
                 !isMobile && "shrink-0",
                 styles.sessionCard
               )}
