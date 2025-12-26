@@ -26,13 +26,19 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    background-image: url("/VRl.png");
+    background-image: url("/VR.png");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     z-index: 10;
     pointer-events: none;
     will-change: transform, opacity;
+}
+
+@media (min-width: 769px) and (max-width: 1440px) {
+    .vrImage {
+        background-image: url("/VRl.png");
+    }
 }
 
 .darkBase {
@@ -55,8 +61,8 @@
             #1a0a2e 30%,
             #2d1b4e 60%,
             #1a0a2e 100%);
-    mask-image: radial-gradient(circle at center, black 25%, transparent 60%);
-    -webkit-mask-image: radial-gradient(circle at center, black 25%, transparent 60%);
+    mask-image: radial-gradient(circle at center, black 25%, black 26%, transparent 27%);
+    -webkit-mask-image: radial-gradient(circle at center, black 25%, black 26%, transparent 27%);
 }
 
 
@@ -130,8 +136,8 @@
     }
 
     .retroBgPreview {
-        mask-image: radial-gradient(circle at center 55%, black 15%, transparent 40%);
-        -webkit-mask-image: radial-gradient(circle at center 55%, black 15%, transparent 40%);
+        mask-image: radial-gradient(circle at center 55%, black 15%, black 16%, transparent 17%);
+        -webkit-mask-image: radial-gradient(circle at center 55%, black 15%, black 16%, transparent 17%);
     }
 
     .vrExitImage {

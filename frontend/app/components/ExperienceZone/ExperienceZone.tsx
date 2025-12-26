@@ -40,13 +40,18 @@ const ExperienceZone = () => {
     const retroBgExitRef = useRef<HTMLDivElement>(null)
     const [isMounted, setIsMounted] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
+    const [isLaptop, setIsLaptop] = useState(false)
 
     useEffect(() => {
         setIsMounted(true)
-        const checkMobile = () => setIsMobile(window.innerWidth <= 768)
-        checkMobile()
-        window.addEventListener("resize", checkMobile)
-        return () => window.removeEventListener("resize", checkMobile)
+        const checkScreenSize = () => {
+            const width = window.innerWidth
+            setIsMobile(width <= 768)
+            setIsLaptop(width > 768 && width <= 1440)
+        }
+        checkScreenSize()
+        window.addEventListener("resize", checkScreenSize)
+        return () => window.removeEventListener("resize", checkScreenSize)
     }, [])
 
     useLayoutEffect(() => {
@@ -65,7 +70,7 @@ const ExperienceZone = () => {
             })
 
             entryTl.set(vrImageRef.current, {
-                scale: 1,
+                scale: isMobile ? 1 : isLaptop ? 1.3 : 1.5,
                 transformOrigin: isMobile ? "center 52%" : "center center"
             })
             entryTl.set(retroWorldRef.current, { opacity: 0, visibility: "hidden" })
@@ -80,9 +85,9 @@ const ExperienceZone = () => {
 
             const maskCenter = isMobile ? "center 52%" : "center";
             const maskStart = isMobile
-                ? `radial-gradient(circle at ${maskCenter}, black 15%, transparent 40%)`
-                : `radial-gradient(circle at center, black 25%, transparent 60%)`;
-            const maskEnd = `radial-gradient(circle at ${maskCenter}, black 100%, transparent 100%)`;
+                ? `radial-gradient(circle at ${maskCenter}, black 15%, black 16%, transparent 40%)`
+                : `radial-gradient(circle at center, black 25%, black 26%, transparent 80%)`;
+            const maskEnd = `radial-gradient(circle at ${maskCenter}, black 95%, black 96%, transparent 100%)`;
 
             entryTl.fromTo(retroBgRef.current, {
                 maskImage: maskStart,
@@ -154,23 +159,24 @@ const ExperienceZone = () => {
                 transformOrigin: isMobile ? "center 52%" : "center center"
             })
 
+            const exitMaskCenter = isMobile ? "center 52%" : "center";
             entryTl.set(retroBgExitRef.current, {
-                maskImage: `radial-gradient(circle at center, black 50%, transparent 90%)`
+                maskImage: `radial-gradient(circle at ${exitMaskCenter}, black 95%, black 96%, transparent 97%)`
             })
 
             entryTl.to(vrExitImageRef.current, {
-                scale: 1,
+                scale: isMobile ? 1 : isLaptop ? 1.3 : 1.5,
                 duration: 2,
                 ease: "power2.inOut",
                 transformOrigin: isMobile ? "center 52%" : "center center"
             })
 
-            const exitMaskEnd = isMobile
-                ? `radial-gradient(circle at center 52%, black 15%, transparent 40%)`
-                : `radial-gradient(circle at center, black 25%, transparent 60%)`;
+            const exitMaskShrink = isMobile
+                ? `radial-gradient(circle at center 52%, black 15%, black 16%, transparent 40%)`
+                : `radial-gradient(circle at center, black 25%, black 26%, transparent 80%)`;
 
             entryTl.to(retroBgExitRef.current, {
-                maskImage: exitMaskEnd,
+                maskImage: exitMaskShrink,
                 duration: 2,
                 ease: "power2.inOut"
             }, "<+=0.4")
@@ -197,7 +203,7 @@ const ExperienceZone = () => {
         }, containerRef)
 
         return () => ctx.revert()
-    }, [isMobile, isMounted])
+    }, [isMobile, isLaptop, isMounted])
 
     if (!isMounted) return null
 
