@@ -237,7 +237,7 @@ export default function PlenarySessions({
 
       <div ref={containerRef} className="relative min-h-screen">
 
-        <div className="plenary-header absolute top-32 md:top-28 left-0 right-0 z-10 px-4 md:px-8">
+        <div className="plenary-header absolute top-20 left-0 right-0 z-10 px-4 md:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-8 mb-4">
             <div>
               <span className="inline-block text-xs md:text-sm font-mono text-titanium-metallic uppercase tracking-widest mb-2 md:mb-4">

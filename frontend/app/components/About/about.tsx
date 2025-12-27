@@ -106,8 +106,7 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative pt-32 md:pt-32 lg:pt-32 pb-32 bg-titanium-black overflow-hidden"
-      style={{ paddingTop: "calc(5rem + 8rem)" }} // 5rem for navbar + 8rem for spacing
+      className="relative py-32 bg-titanium-black overflow-hidden"
     >
 
       <div className="absolute inset-0 grid-pattern opacity-30" />
