@@ -237,18 +237,18 @@ export default function PlenarySessions({
 
       <div ref={containerRef} className="relative min-h-screen">
 
-        <div className="plenary-header absolute top-20 left-0 right-0 z-10 px-4 md:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-8 mb-4">
+        <div className="plenary-header absolute top-8 sm:top-16 md:top-20 left-0 right-0 z-10 px-4 sm:px-6 md:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-2 sm:gap-4 md:gap-8 mb-4 sm:mb-4">
             <div>
-              <span className="inline-block text-xs md:text-sm font-mono text-titanium-metallic uppercase tracking-widest mb-2 md:mb-4">
+              <span className="inline-block text-[10px] sm:text-xs md:text-sm font-mono text-titanium-metallic uppercase tracking-widest mb-1 sm:mb-2 md:mb-4">
                 Unlock Knowledge
               </span>
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold">
                 <span className="text-titanium-gradient">Plenary</span>{" "}
                 <span className="text-titanium-light">Sessions</span>
               </h2>
             </div>
-            <p className="text-titanium-metallic text-sm md:text-lg max-w-xl text-left md:text-right pb-1">
+            <p className="text-titanium-metallic text-xs sm:text-sm md:text-lg max-w-xl text-left md:text-right pb-1 hidden sm:block">
               Engage with industry leaders and visionaries as they share insights on the future of technology and innovation.
             </p>
           </div>
@@ -256,7 +256,7 @@ export default function PlenarySessions({
         <div
           ref={scrollContainerRef}
           className={cn(
-            "flex gap-4 md:gap-8 pt-32 md:pt-40 lg:pt-48 2xl:pt-64 pb-16 md:pb-24 pl-4 md:pl-8 pr-4 md:pr-8",
+            "flex gap-4 sm:gap-6 md:gap-8 pt-28 sm:pt-32 md:pt-40 lg:pt-48 2xl:pt-64 pb-12 sm:pb-16 md:pb-24 px-3 sm:px-4 md:pl-8 md:pr-8",
             isMobile ? "flex-col items-center" : "items-center",
             styles.scrollContainer
           )}
@@ -265,56 +265,59 @@ export default function PlenarySessions({
             <div
               key={session.id}
               className={cn(
-                "plenary-card w-full md:w-[85vw] lg:w-[900px] rounded-2xl overflow-hidden",
+                "plenary-card w-[calc(100%-8px)] sm:w-[calc(100%-16px)] md:w-[85vw] lg:w-[900px] rounded-xl sm:rounded-2xl overflow-hidden",
                 !isMobile && "shrink-0",
                 styles.sessionCard
               )}
             >
-              <div className="relative w-full h-full bg-linear-to-br from-titanium-charcoal via-titanium-rich to-titanium-black border border-titanium-silver/20 backdrop-blur-xl p-6 md:p-6 flex flex-col">
+              <div className="relative w-full h-full bg-linear-to-br from-titanium-charcoal via-titanium-rich to-titanium-black border border-titanium-silver/20 backdrop-blur-xl p-3 sm:p-4 md:p-6 flex flex-col">
                 {isMobile ? (
-                  <div className="relative flex flex-col justify-between w-full h-full min-h-[300px] p-4 gap-0 overflow-hidden">
-                    <div className="absolute top-4 right-4 z-10">
-                      {session.isOtherSpeakers ? (
-                        <div className={cn(styles.dayBadge, styles.otherBadge)}>
-                          <span className="text-xs font-bold">SPECIAL</span>
-                          <span className="text-lg font-bold">✦</span>
-                        </div>
-                      ) : (
-                        <div className={styles.dayBadge}>
-                          <span className="text-xs font-bold">DAY</span>
-                          <span className="text-2xl font-bold">{session.sessionNumber}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex flex-col flex-1 justify-start min-h-0 mt-2">
-                      <h3 className="text-lg font-bold text-titanium-light leading-tight mt-2 mb-3 pr-16">
+                  <div className="relative flex flex-col w-full p-2 gap-2">
+                    <div className="flex items-start justify-between gap-3">
+                      <h3 className="text-sm sm:text-base font-bold text-titanium-light leading-snug flex-1 pr-2">
                         {session.sessionTitle}
                       </h3>
-                      {session.awaitingConfirmation ? (
-                        <span className={styles.revealingBadge}>Revealing Soon</span>
+                      {session.isOtherSpeakers ? (
+                        <span className={cn(styles.dayBadgePill)}>
+                          <span className="font-bold">SPECIAL</span> ✦
+                        </span>
                       ) : (
-                        <p className="text-sm text-titanium-metallic mb-2">
-                          {session.speakers.length} Speaker{session.speakers.length !== 1 ? 's' : ''}
-                        </p>
+                        <span className={cn(styles.dayBadgePill)}>
+                          <span className="font-bold">DAY</span> {session.sessionNumber}
+                        </span>
                       )}
-                      <button
-                        onClick={() => setSelectedSession(session)}
-                        className="mt-2 px-4 py-2 bg-titanium-silver/10 border border-titanium-silver/30 rounded-lg text-titanium-silver hover:bg-titanium-silver/20 transition-colors w-fit"
-                      >
-                        Know More
-                      </button>
                     </div>
-                    <div className="absolute bottom-4 right-4 flex -space-x-2">
-                      {session.speakers.slice(0, 3).map((speaker, idx) => (
-                        <div key={idx} className={styles.miniAvatar}>
-                          <span className={styles.miniInitials}>{getInitials(speaker.name)}</span>
-                        </div>
-                      ))}
-                      {session.speakers.length > 3 && (
-                        <div className={cn(styles.miniAvatar, styles.miniAvatarMore)}>
-                          <span className={styles.miniInitials}>+{session.speakers.length - 3}</span>
-                        </div>
-                      )}
+                    <p className="text-[11px] sm:text-xs text-titanium-metallic/70 line-clamp-2 leading-relaxed">
+                      {session.topic.description}
+                    </p>
+                    <div className="flex items-center justify-between mt-1 pt-2 border-t border-titanium-silver/10">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setSelectedSession(session)}
+                          className="px-2.5 py-1 bg-titanium-silver/10 border border-titanium-silver/30 rounded text-titanium-silver hover:bg-titanium-silver/20 transition-colors text-[10px] sm:text-xs"
+                        >
+                          Know More
+                        </button>
+                        {session.awaitingConfirmation ? (
+                          <span className={cn(styles.revealingBadge, styles.revealingBadgeMobile)}>Revealing Soon</span>
+                        ) : (
+                          <span className={cn(styles.speakersBadge, styles.revealingBadgeMobile)}>
+                            {session.speakers.length} Speaker{session.speakers.length !== 1 ? 's' : ''}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex -space-x-1.5">
+                        {session.speakers.slice(0, 3).map((speaker, idx) => (
+                          <div key={idx} className={cn(styles.miniAvatar, styles.miniAvatarMobile)}>
+                            <span className={cn(styles.miniInitials, styles.miniInitialsMobile)}>{getInitials(speaker.name)}</span>
+                          </div>
+                        ))}
+                        {session.speakers.length > 3 && (
+                          <div className={cn(styles.miniAvatar, styles.miniAvatarMore, styles.miniAvatarMobile)}>
+                            <span className={cn(styles.miniInitials, styles.miniInitialsMobile)}>+{session.speakers.length - 3}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ) : (
@@ -432,28 +435,26 @@ export default function PlenarySessions({
       </div>
 
       <div className={cn(
-        "absolute bottom-8 flex items-center gap-2 text-titanium-silver/50 text-sm",
+        "absolute bottom-4 sm:bottom-6 md:bottom-8 flex items-center gap-1.5 sm:gap-2 text-titanium-silver/50 text-xs sm:text-sm",
         isMobile ? "left-1/2 transform -translate-x-1/2" : "right-8"
       )}>
-        <span>{isMobile ? "Scroll down to explore" : "Scroll to explore"}</span>
-        <svg className={cn("w-6 h-6", isMobile ? "animate-bounce" : "animate-bounce-x")} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <span>{isMobile ? "Scroll down" : "Scroll to explore"}</span>
+        <svg className={cn("w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6", isMobile ? "animate-bounce" : "animate-bounce-x")} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobile ? "M19 14l-7 7m0 0l-7-7m7 7V3" : "M9 5l7 7-7 7"} />
         </svg>
       </div>
       {selectedSession && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-titanium-charcoal border border-titanium-silver/20 rounded-2xl p-6 max-w-2xl w-full max-h-[85vh] relative overflow-hidden">
+          <div className="bg-titanium-charcoal border border-titanium-silver/20 rounded-2xl p-4 sm:p-6 w-full max-w-[calc(100%-2rem)] sm:max-w-2xl max-h-[85vh] relative overflow-hidden">
             <div className="flex justify-between items-start mb-4">
               {selectedSession.isOtherSpeakers ? (
-                <div className={cn(styles.dayBadge, styles.otherBadge)}>
-                  <span className="text-xs font-bold">SPECIAL</span>
-                  <span className="text-xl font-bold">✦</span>
-                </div>
+                <span className={styles.dayBadgePillLarge}>
+                  <span className="font-bold">SPECIAL</span> ✦
+                </span>
               ) : (
-                <div className={styles.dayBadge}>
-                  <span className="text-xs font-bold">DAY</span>
-                  <span className="text-2xl font-bold">{selectedSession.sessionNumber}</span>
-                </div>
+                <span className={styles.dayBadgePillLarge}>
+                  <span className="font-bold">DAY</span> {selectedSession.sessionNumber}
+                </span>
               )}
               <button
                 onClick={() => setSelectedSession(null)}
