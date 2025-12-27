@@ -1,0 +1,10 @@
+{
+  "name": "titanium-multi",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && bun install && bun run build",
+    "dev": "cd frontend && bun run dev",
+    "start": "cd frontend && bun run start"
+  }
+}
