@@ -68,6 +68,7 @@ const plenarySessionsData: PlenarySession[] = [
         name: "Dr. Shankar Venugopal",
         title: "Vice-President",
         organization: "Mahindra & Mahindra",
+        photo: "/Plenary/ShankarVenugopal.png",
       },
       {
         name: "Dr. Nagesh Poojari",
@@ -78,11 +79,13 @@ const plenarySessionsData: PlenarySession[] = [
         name: "Mr. Paresh Patel",
         title: "Founder & CEO",
         organization: "Verde Mobility, India",
+        photo: "/Plenary/PareshPatel.jpg",
       },
       {
         name: "Dinesh Arjun",
         title: "CEO and Co-Founder",
         organization: "Raptee",
+        photo: "/Plenary/dineshArjun.png",
       },
     ],
     awaitingConfirmation: false,
@@ -129,6 +132,7 @@ const plenarySessionsData: PlenarySession[] = [
         name: "Bruce K Gale",
         title: "Chair and Merit Medical Systems Inc. Endowed Engineering Professor",
         organization: "The University of Utah, Dept. of Mechanical Engineering",
+        photo: "/Plenary/BruceGale.jpg",
       },
       {
         name: "Mr. Piyush Padmanabhan",
@@ -164,6 +168,7 @@ const plenarySessionsData: PlenarySession[] = [
         name: "Dr. Krishnaswami (Hari) Srihari",
         title: "Dean Emeritus, SUNY Distinguished Professor",
         organization: "Thomas J. Watson College of Engineering, Binghamton University, New York",
+        photo: "/Plenary/srihari.jpg",
       },
     ],
     awaitingConfirmation: false,
@@ -487,7 +492,11 @@ export default function PlenarySessions({
                     {selectedSession.speakers.map((speaker, idx) => (
                       <div key={idx} className={styles.modalSpeakerCard}>
                         <div className={styles.modalSpeakerAvatar}>
-                          <span className={styles.speakerInitials}>{getInitials(speaker.name)}</span>
+                          {speaker.photo ? (
+                            <img src={speaker.photo} alt={speaker.name} className={styles.speakerPhoto} />
+                          ) : (
+                            <span className={styles.speakerInitials}>{getInitials(speaker.name)}</span>
+                          )}
                         </div>
                         <div>
                           <h5 className="text-titanium-light font-semibold text-sm">{speaker.name}</h5>
