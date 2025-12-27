@@ -65,9 +65,15 @@ export default function Navbar() {
         ref={navRef}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 will-change-transform ${
           isScrolled
-            ? "bg-titanium-black/90 backdrop-blur-xl border-b border-titanium-silver/10"
+            ? "bg-white/[0.02] backdrop-blur-xl border-b border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]"
             : "bg-transparent"
         }`}
+        style={isScrolled ? {
+          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)",
+          boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+          backdropFilter: "blur(20px) saturate(180%)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%)",
+        } : undefined}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
