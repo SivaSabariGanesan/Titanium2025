@@ -28,65 +28,77 @@ const useMediaQuery = (query: string) => {
 
 const workshops = [
   {
-    title: "Building Production-Ready AI Applications",
-    instructor: "Dr. Sarah Chen",
-    instructorRole: "Chief AI Officer, TechCorp",
-    duration: "4 hours",
-    level: "Advanced",
-    participants: "50 seats",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop",
-    topics: ["LLM Fine-tuning", "RAG Systems", "Production Deployment"],
+    title: "Biovate Startup Tiger Shark Tank",
+    instructor: "Industry Experts",
+    instructorRole: "VCs & Startup Mentors",
+    duration: "2 days",
+    level: "All Levels",
+    participants: "Open",
+    image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&h=400&fit=crop",
+    topics: ["Pitch Competition", "Startup Funding", "Business Strategy"],
+    dates: "Feb 12-13, 2026",
+    venue: "Campus Arena & Main Hall",
   },
   {
-    title: "Kubernetes Security Masterclass",
-    instructor: "Elena Rodriguez",
-    instructorRole: "Security Researcher, CyberDefense Labs",
+    title: "BioEdge Academy Certificate Workshop",
+    instructor: "BioEdge Academy",
+    instructorRole: "Certified Instructors",
+    duration: "2 days",
+    level: "All Levels",
+    participants: "Open",
+    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=600&h=400&fit=crop",
+    topics: ["Biotechnology", "Research Methods", "Certification"],
+    dates: "Feb 12-13, 2026",
+    venue: "Academy Labs",
+  },
+  {
+    title: "SkillGene Certificate Workshop",
+    instructor: "SkillGene Academy",
+    instructorRole: "Genetic Engineering Specialists",
     duration: "3 hours",
-    level: "Intermediate",
-    participants: "40 seats",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
-    topics: ["Pod Security", "Network Policies", "RBAC"],
+    level: "All Levels",
+    participants: "Open",
+    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop",
+    topics: ["Genetic Engineering", "Lab Techniques", "Certification"],
+    dates: "Feb 13-14, 2026",
+    venue: "Genetic Engg Lab, I Floor, Workshop Block",
   },
   {
-    title: "Full-Stack Web3 Development",
-    instructor: "Marcus Johnson",
-    instructorRole: "VP Engineering, CloudScale",
-    duration: "5 hours",
+    title: "Bioculina Lab-based Workshop",
+    instructor: "Bioculina Academy",
+    instructorRole: "Food Processing Specialists",
+    duration: "Day 1: 12-3 PM, Day 2: 1-4 PM",
+    level: "All Levels",
+    participants: "Open",
+    image: "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?w=600&h=400&fit=crop",
+    topics: ["Round 1: 1-2 hrs", "Round 2: 1-2 hrs", "Food Processing"],
+    dates: "Feb 13-14, 2026",
+    venue: "C-Block, Ground Floor Food Processing Labs",
+  },
+  {
+    title: "The DeepDive Talk Show",
+    instructor: "Industry Leaders",
+    instructorRole: "Tech Experts & Thought Leaders",
+    duration: "2 hours",
+    level: "All Levels",
+    participants: "Open",
+    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&h=400&fit=crop",
+    topics: ["Tech Insights", "Industry Trends", "Q&A Session"],
+    dates: "Feb 13, 2026",
+    venue: "Purple Hall",
+  },
+  {
+    title: "Hack to Blockchain Security Workshop and Contest",
+    instructor: "Blockchain Security Experts",
+    instructorRole: "Cybersecurity & Blockchain Specialists",
+    duration: "4 hours",
     level: "Intermediate",
-    participants: "60 seats",
+    participants: "Open",
     image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&h=400&fit=crop",
-    topics: ["Smart Contracts", "DApps", "Token Standards"],
-  },
-  {
-    title: "Advanced System Design Patterns",
-    instructor: "David Kim",
-    instructorRole: "Founder & CEO, QuantumLeap",
-    duration: "4 hours",
-    level: "Advanced",
-    participants: "45 seats",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
-    topics: ["Microservices", "Event Sourcing", "CQRS"],
-  },
-  {
-    title: "Cloud Native Architecture",
-    instructor: "Priya Sharma",
-    instructorRole: "Head of Product, MetaVerse Labs",
-    duration: "4 hours",
-    level: "Advanced",
-    participants: "55 seats",
-    image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&h=400&fit=crop",
-    topics: ["Serverless", "Containers", "Service Mesh"],
-  },
-  {
-    title: "DevSecOps Pipeline Mastery",
-    instructor: "James Wright",
-    instructorRole: "Distinguished Engineer, OpenSource Foundation",
-    duration: "3 hours",
-    level: "Intermediate",
-    participants: "45 seats",
-    image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=600&h=400&fit=crop",
-    topics: ["CI/CD Security", "SAST/DAST", "Compliance"],
-  },
+    topics: ["Blockchain Security", "Ethical Hacking", "Security Contest"],
+    dates: "Feb 13, 2026",
+    venue: "Main Block Classrooms",
+  }
 ];
 
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -226,6 +238,22 @@ export default function Workshops() {
                     {workshop.title}
                   </h3>
 
+                  {workshop.dates && (
+                    <div className="mb-2">
+                      <p className="text-titanium-silver text-sm font-medium">
+                        📅 {workshop.dates}
+                      </p>
+                    </div>
+                  )}
+
+                  {workshop.venue && (
+                    <div className="mb-3">
+                      <p className="text-titanium-metallic text-xs">
+                        📍 {workshop.venue}
+                      </p>
+                    </div>
+                  )}
+
                   <div className="mb-3">
                     <p className="text-titanium-silver text-sm font-medium">
                       {workshop.instructor}
@@ -354,6 +382,21 @@ export default function Workshops() {
                     {workshop.title}
                   </h3>
 
+                  {workshop.dates && (
+                    <div className="mb-2">
+                      <p className="text-titanium-silver text-sm font-medium">
+                        📅 {workshop.dates}
+                      </p>
+                    </div>
+                  )}
+
+                  {workshop.venue && (
+                    <div className="mb-3">
+                      <p className="text-titanium-metallic text-xs">
+                        📍 {workshop.venue}
+                      </p>
+                    </div>
+                  )}
 
                   <div className="mb-4">
                     <p className="text-titanium-silver text-sm font-medium">
