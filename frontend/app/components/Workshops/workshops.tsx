@@ -127,7 +127,7 @@ export default function Workshops() {
     const totalWidth = panel.scrollWidth;
     const viewportWidth = window.innerWidth;
     const availableSpace = viewportWidth - (0.35 * viewportWidth); // Account for left sidebar
-    
+
     const tween = gsap.to(panel, {
       x: () => -(totalWidth - availableSpace + 100), // Add extra 100px padding
       ease: "none",
@@ -332,7 +332,7 @@ export default function Workshops() {
             </div>
           </div>
 
-          <div 
+          <div
             className="absolute left-[35vw] top-0 h-full w-48 z-10 pointer-events-none"
             style={{
               background: "linear-gradient(to right, var(--color-titanium-rich) 0%, var(--color-titanium-rich) 20%, transparent 100%)"
@@ -343,102 +343,102 @@ export default function Workshops() {
           <div className="h-full flex items-center pl-[35vw]">
             <div
               ref={panelRef}
-              className="flex gap-8 pr-[15vw]"
+              className="flex gap-8 pr-[15vw] pl-28"
               style={{ willChange: "transform" }}
             >
-            {workshops.map((workshop, index) => (
-              <div
-                key={workshop.title}
-                className="workshop-card group w-[420px] flex-shrink-0 titanium-card rounded-2xl overflow-hidden relative"
-              >
+              {workshops.map((workshop, index) => (
+                <div
+                  key={workshop.title}
+                  className="workshop-card group w-[420px] flex-shrink-0 titanium-card rounded-2xl overflow-hidden relative"
+                >
 
-                <div className="absolute top-4 right-4 z-10">
-                  <span className="text-6xl font-bold text-titanium-silver/10 font-mono">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-
-                <div className="relative h-52 overflow-hidden">
-                  <img
-                    src={workshop.image}
-                    alt={workshop.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-titanium-charcoal via-transparent to-transparent" />
-
-                  <div className="absolute top-4 left-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-mono border ${getLevelColor(
-                        workshop.level
-                      )} bg-titanium-black/50 backdrop-blur-sm`}
-                    >
-                      {workshop.level}
+                  <div className="absolute top-4 right-4 z-10">
+                    <span className="text-6xl font-bold text-titanium-silver/10 font-mono">
+                      {String(index + 1).padStart(2, "0")}
                     </span>
                   </div>
-                </div>
 
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-titanium-white mb-3 line-clamp-2 min-h-[3.5rem]">
-                    {workshop.title}
-                  </h3>
+                  <div className="relative h-52 overflow-hidden">
+                    <img
+                      src={workshop.image}
+                      alt={workshop.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-titanium-charcoal via-transparent to-transparent" />
 
-                  {workshop.dates && (
-                    <div className="mb-2">
-                      <p className="text-titanium-silver text-sm font-medium">
-                        📅 {workshop.dates}
-                      </p>
-                    </div>
-                  )}
-
-                  {workshop.venue && (
-                    <div className="mb-3">
-                      <p className="text-titanium-metallic text-xs">
-                        📍 {workshop.venue}
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="mb-4">
-                    <p className="text-titanium-silver text-sm font-medium">
-                      {workshop.instructor}
-                    </p>
-                    <p className="text-titanium-metallic text-xs">
-                      {workshop.instructorRole}
-                    </p>
-                  </div>
-
-
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {workshop.topics.map((topic) => (
+                    <div className="absolute top-4 left-4">
                       <span
-                        key={topic}
-                        className="px-2 py-1 rounded text-xs bg-titanium-charcoal text-titanium-metallic"
+                        className={`px-3 py-1 rounded-full text-xs font-mono border ${getLevelColor(
+                          workshop.level
+                        )} bg-titanium-black/50 backdrop-blur-sm`}
                       >
-                        {topic}
+                        {workshop.level}
                       </span>
-                    ))}
+                    </div>
                   </div>
 
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-titanium-white mb-3 line-clamp-2 min-h-[3.5rem]">
+                      {workshop.title}
+                    </h3>
 
-                  <div className="flex items-center gap-4 pt-4 border-t border-titanium-silver/10">
-                    <div className="flex items-center gap-1 text-titanium-metallic text-sm">
-                      <Clock size={14} />
-                      {workshop.duration}
+                    {workshop.dates && (
+                      <div className="mb-2">
+                        <p className="text-titanium-silver text-sm font-medium">
+                          📅 {workshop.dates}
+                        </p>
+                      </div>
+                    )}
+
+                    {workshop.venue && (
+                      <div className="mb-3">
+                        <p className="text-titanium-metallic text-xs">
+                          📍 {workshop.venue}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="mb-4">
+                      <p className="text-titanium-silver text-sm font-medium">
+                        {workshop.instructor}
+                      </p>
+                      <p className="text-titanium-metallic text-xs">
+                        {workshop.instructorRole}
+                      </p>
                     </div>
-                    <div className="flex items-center gap-1 text-titanium-metallic text-sm">
-                      <Users size={14} />
-                      {workshop.participants}
+
+
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {workshop.topics.map((topic) => (
+                        <span
+                          key={topic}
+                          className="px-2 py-1 rounded text-xs bg-titanium-charcoal text-titanium-metallic"
+                        >
+                          {topic}
+                        </span>
+                      ))}
                     </div>
-                    <div className="flex items-center gap-1 text-titanium-metallic text-sm">
-                      <Signal size={14} />
-                      {workshop.level}
+
+
+                    <div className="flex items-center gap-4 pt-4 border-t border-titanium-silver/10">
+                      <div className="flex items-center gap-1 text-titanium-metallic text-sm">
+                        <Clock size={14} />
+                        {workshop.duration}
+                      </div>
+                      <div className="flex items-center gap-1 text-titanium-metallic text-sm">
+                        <Users size={14} />
+                        {workshop.participants}
+                      </div>
+                      <div className="flex items-center gap-1 text-titanium-metallic text-sm">
+                        <Signal size={14} />
+                        {workshop.level}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
         </div>
       )}
