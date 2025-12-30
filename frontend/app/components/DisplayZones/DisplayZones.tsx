@@ -50,61 +50,6 @@ const zonesData: DisplayZone[] = [
             { label: "Power", value: "450 HP" },
         ],
         highlights: ["Ford Mustang", "Chevy Camaro", "Dodge Challenger"],
-    },
-    {
-        id: "z4",
-        title: "Wright Flyer",
-        shortDesc: "The first powered flight in history.",
-        image: "https://images.unsplash.com/photo-1559533905-d6fbbd04aa0f?w=400&h=400&fit=crop",
-        stats: [
-            { label: "Year", value: "1903" },
-            { label: "Distance", value: "120 ft" },
-        ],
-        highlights: ["Kitty Hawk", "Wright Brothers", "Aviation Pioneer"],
-    },
-    {
-        id: "z5",
-        title: "Tesla Coil",
-        shortDesc: "High-voltage electrical resonance.",
-        image: "https://images.unsplash.com/photo-1509281373149-e957c6296406?w=400&h=400&fit=crop",
-        stats: [
-            { label: "Voltage", value: "1M V" },
-            { label: "Inventor", value: "N. Tesla" },
-        ],
-        highlights: ["Wireless Power", "AC Current", "Lightning Demo"],
-    },
-    {
-        id: "z6",
-        title: "Apollo 11 Capsule",
-        shortDesc: "The spacecraft that carried astronauts to the Moon.",
-        image: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&h=400&fit=crop",
-        stats: [
-            { label: "Crew", value: "3" },
-            { label: "Mission", value: "1969" },
-        ],
-        highlights: ["Neil Armstrong", "Moon Landing", "NASA Milestone"],
-    },
-    {
-        id: "z7",
-        title: "Steam Engine",
-        shortDesc: "The machine that powered the Industrial Revolution.",
-        image: "https://images.unsplash.com/photo-1501630834273-4b5604d2ee31?w=400&h=400&fit=crop",
-        stats: [
-            { label: "Year", value: "1712" },
-            { label: "Inventor", value: "T. Newcomen" },
-        ],
-        highlights: ["James Watt", "Locomotives", "Factories"],
-    },
-    {
-        id: "z8",
-        title: "Hubble Telescope",
-        shortDesc: "Our eye in the cosmos for over 30 years.",
-        image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=400&h=400&fit=crop",
-        stats: [
-            { label: "Orbit", value: "340 mi" },
-            { label: "Launch", value: "1990" },
-        ],
-        highlights: ["Deep Field", "Nebulae", "Galaxy Images"],
     }
 ];
 

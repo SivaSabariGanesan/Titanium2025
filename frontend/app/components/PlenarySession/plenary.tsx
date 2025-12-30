@@ -271,7 +271,7 @@ export default function PlenarySessions({
             <div
               key={session.id}
               className={cn(
-                "plenary-card w-[calc(100%-8px)] sm:w-[calc(100%-16px)] md:w-[85vw] lg:w-[900px] rounded-xl sm:rounded-2xl overflow-hidden",
+                "plenary-card w-[calc(100%-8px)] sm:w-[calc(100%-16px)] md:w-[85vw] lg:w-[min(820px,90vw)] xl:w-[min(900px,85vw)] rounded-xl sm:rounded-2xl overflow-hidden",
                 !isMobile && "shrink-0",
                 styles.sessionCard
               )}
@@ -344,10 +344,10 @@ export default function PlenarySessions({
                   </div>
                 ) : (
                   <>
-                    <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3 w-full">
                         <div className="flex-1">
-                          <h3 className="text-xl font-bold text-titanium-light leading-tight mt-2">
+                          <h3 className="text-lg font-bold text-titanium-light leading-tight mt-2">
                             {session.sessionTitle}
                           </h3>
                           {session.awaitingConfirmation ? (
@@ -375,7 +375,7 @@ export default function PlenarySessions({
                     </div>
 
                     <div className={cn(
-                      "grid gap-6 md:gap-12 flex-1",
+                      "grid gap-4 md:gap-8 flex-1",
                       isMobile ? "grid-cols-2" : "grid-cols-9"
                     )}>
                       <div className={cn(
@@ -419,16 +419,16 @@ export default function PlenarySessions({
                       <div className={cn(
                         isMobile ? "col-span-1 flex flex-col justify-between overflow-y-auto" : "col-span-4 flex flex-col justify-between"
                       )}>
-                        <div className={cn("space-y-3", isMobile && "space-y-2")}>
+                        <div className={cn("space-y-2", isMobile && "space-y-2")}>
                           <div>
                             <div className="flex items-center gap-2 mb-2">
                               <div className="h-px flex-1 bg-linear-to-r from-titanium-silver/50 to-transparent" />
                               <span className="text-xs text-titanium-silver/70 uppercase tracking-wider">Topic</span>
                             </div>
-                            <h4 className="text-xl md:text-lg font-bold text-titanium-bright mb-1">
+                            <h4 className="text-base md:text-base font-bold text-titanium-bright mb-1">
                               {session.topic.title}
                             </h4>
-                            <p className="text-base md:text-xs text-titanium-metallic leading-relaxed">
+                            <p className="text-sm md:text-xs text-titanium-metallic leading-relaxed">
                               {session.topic.description}
                             </p>
                           </div>
