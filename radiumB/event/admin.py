@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from django.urls import path
 from django.utils.html import format_html
 from django.contrib import messages
-from .models import Event, ODList, Participant, EventGuide, EventQuestion
+from .models import Event, ODList, Participant, EventGuide, EventQuestion, EventCategory
 from .email_services import send_registration_email, send_qr_email_to_participant, get_participant_qr_status_html, create_participant_with_od
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
@@ -116,7 +116,6 @@ class EventAdmin(ImportExportModelAdmin):
     resource_class = EventResource
     list_display = [
         'event_name',
-        'club',
         'event_date',
         'event_type',
         'payment_type',
@@ -129,7 +128,6 @@ class EventAdmin(ImportExportModelAdmin):
     ]
 
     list_filter = [
-        'club',
         'event_type',
         'payment_type',
         'gateway_options',
@@ -139,13 +137,13 @@ class EventAdmin(ImportExportModelAdmin):
         'created_at'
     ]
 
-    search_fields = ['event_name', 'description', 'venue', 'club__name']
+    search_fields = ['event_name', 'description', 'venue']
 
     readonly_fields = ['created_at', 'updated_at', 'is_upcoming', 'is_registration_open', 'od_status_detail']
 
     fieldsets = (
-        ('Club & Basic Information', {
-            'fields': ('club', 'event_name', 'description', 'venue')
+        ('Basic Information', {
+            'fields': ('event_name', 'description', 'venue')
         }),
         ('Event Details', {
             'fields': ('event_type', 'event_date', 'start_time', 'end_time', 'payment_type', 'participation_type')
@@ -722,3 +720,50 @@ class EventQuestionAdmin(ImportExportModelAdmin):
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.select_related('event')
+
+
+class EventCategoryResource(resources.ModelResource):
+    """Resource for importing/exporting EventCategory data"""
+    class Meta:
+        model = EventCategory
+        fields = ('id', 'code', 'display_name', 'description', 'is_active', 'order', 'created_at', 'updated_at')
+        export_order = ('id', 'code', 'display_name', 'description', 'is_active', 'order', 'created_at', 'updated_at')
+
+
+@admin.register(EventCategory)
+class EventCategoryAdmin(ImportExportModelAdmin):
+    """Admin interface for EventCategory model"""
+    resource_class = EventCategoryResource
+    list_display = ['code', 'display_name', 'order', 'is_active', 'event_count', 'created_at']
+    list_editable = ['order', 'is_active']
+    list_filter = ['is_active']
+    search_fields = ['code', 'display_name', 'description']
+    ordering = ['order', 'code']
+    
+    fieldsets = (
+        ('Category Information', {
+            'fields': ('code', 'display_name', 'description')
+        }),
+        ('Settings', {
+            'fields': ('is_active', 'order')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    readonly_fields = ('created_at', 'updated_at', 'event_count')
+    
+    def event_count(self, obj):
+        """Show number of events using this category"""
+        count = obj.event_set.count()
+        if count > 0:
+            return format_html('<a href="/admin/event/event/?event_type__id__exact={}">{} events</a>', obj.id, count)
+        return '0 events'
+    event_count.short_description = 'Events Using Category'
+    
+    def get_readonly_fields(self, request, obj=None):
+        if obj:  # Editing existing object
+            return self.readonly_fields + ('event_count',)
+        return self.readonly_fields

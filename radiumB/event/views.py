@@ -1638,3 +1638,174 @@ class ParticipantFormResponseAPIView(RetrieveAPIView):
         event = get_object_or_404(Event, id=event_id)
         participant = get_object_or_404(Participant, id=participant_id, event=event)
         return participant
+# ===
+# ========== EVENT CATEGORY ENDPOINTS ==========
+
+class EventCategoryListAPIView(APIView):
+    """
+    Get all active event categories
+    GET /api/events/categories/
+    """
+    permission_classes = [AllowAny]
+    
+    def get(self, request):
+        """Get all active event categories"""
+        try:
+            from .models import EventCategory
+            categories = EventCategory.objects.filter(is_active=True).order_by('order')
+            
+            data = [{
+                'code': cat.code,
+                'display_name': cat.display_name,
+                'description': cat.description
+            } for cat in categories]
+            
+            return create_success_response(data=data)
+            
+        except Exception as e:
+            return create_error_response(f'Failed to fetch event categories: {str(e)}', 500)
+
+
+class EventCategoryCreateAPIView(APIView):
+    """
+    Create a new event category (Admin only)
+    POST /api/events/categories/create/
+    """
+    permission_classes = [IsEventStaffOrAdmin]
+    
+    def post(self, request):
+        """Create a new event category"""
+        try:
+            from .models import EventCategory
+            
+            code = request.data.get('code')
+            display_name = request.data.get('display_name')
+            description = request.data.get('description', '')
+            order = request.data.get('order', 0)
+            
+            if not code or not display_name:
+                return create_error_response('Code and display_name are required', 400)
+            
+            # Check if category with this code already exists
+            if EventCategory.objects.filter(code=code).exists():
+                return create_error_response('Category with this code already exists', 400)
+            
+            category = EventCategory.objects.create(
+                code=code,
+                display_name=display_name,
+                description=description,
+                order=order
+            )
+            
+            data = {
+                'id': category.id,
+                'code': category.code,
+                'display_name': category.display_name,
+                'description': category.description,
+                'order': category.order
+            }
+            
+            return create_success_response(
+                data=data,
+                message='Event category created successfully'
+            )
+            
+        except Exception as e:
+            return create_error_response(f'Failed to create event category: {str(e)}', 500)
+
+
+class EventCategoryUpdateAPIView(APIView):
+    """
+    Update an event category (Admin only)
+    PUT/PATCH /api/events/categories/<category_id>/update/
+    """
+    permission_classes = [IsEventStaffOrAdmin]
+    
+    def put(self, request, category_id):
+        """Update event category"""
+        return self._update_category(request, category_id, partial=False)
+    
+    def patch(self, request, category_id):
+        """Partially update event category"""
+        return self._update_category(request, category_id, partial=True)
+    
+    def _update_category(self, request, category_id, partial=False):
+        try:
+            from .models import EventCategory
+            
+            category = get_object_or_404(EventCategory, id=category_id)
+            
+            if not partial:
+                # Full update - require all fields
+                code = request.data.get('code')
+                display_name = request.data.get('display_name')
+                
+                if not code or not display_name:
+                    return create_error_response('Code and display_name are required', 400)
+                
+                category.code = code
+                category.display_name = display_name
+            else:
+                # Partial update - only update provided fields
+                if 'code' in request.data:
+                    category.code = request.data['code']
+                if 'display_name' in request.data:
+                    category.display_name = request.data['display_name']
+            
+            if 'description' in request.data:
+                category.description = request.data['description']
+            if 'order' in request.data:
+                category.order = request.data['order']
+            if 'is_active' in request.data:
+                category.is_active = request.data['is_active']
+            
+            category.save()
+            
+            data = {
+                'id': category.id,
+                'code': category.code,
+                'display_name': category.display_name,
+                'description': category.description,
+                'order': category.order,
+                'is_active': category.is_active
+            }
+            
+            return create_success_response(
+                data=data,
+                message='Event category updated successfully'
+            )
+            
+        except Exception as e:
+            return create_error_response(f'Failed to update event category: {str(e)}', 500)
+
+
+class EventCategoryDeleteAPIView(APIView):
+    """
+    Delete an event category (Admin only)
+    DELETE /api/events/categories/<category_id>/delete/
+    """
+    permission_classes = [IsEventStaffOrAdmin]
+    
+    def delete(self, request, category_id):
+        """Delete event category"""
+        try:
+            from .models import EventCategory
+            
+            category = get_object_or_404(EventCategory, id=category_id)
+            
+            # Check if any events are using this category
+            if category.event_set.exists():
+                return create_error_response(
+                    'Cannot delete category that is being used by events', 
+                    400
+                )
+            
+            category_name = category.display_name
+            category.delete()
+            
+            return create_success_response(
+                message=f'Event category "{category_name}" deleted successfully'
+            )
+            
+        except Exception as e:
+            return create_error_response(f'Failed to delete event category: {str(e)}', 500)
