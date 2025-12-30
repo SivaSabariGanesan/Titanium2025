@@ -26,8 +26,7 @@ urlpatterns = [
     path('api/', include('event.urls')),
     path('api/auth/', include('authentication.urls')),
     path('api/users/', include('users.urls')),
-    path('api/payment/', include('payment.urls')),
-    path('', include('clubs.urls')),
+    path('api/payment/', include('payment.urls'))
 ]
 
 # change in production

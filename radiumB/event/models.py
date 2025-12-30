@@ -6,16 +6,53 @@ from datetime import datetime, time
 
 User = get_user_model()
 
+
+class EventCategory(models.Model):
+    """Model to store event category choices dynamically"""
+    code = models.CharField(max_length=20, unique=True, help_text="Category code (e.g., 'workshop', 'seminar')")
+    display_name = models.CharField(max_length=50, help_text="Display name (e.g., 'Workshop', 'Seminar')")
+    description = models.TextField(blank=True, help_text="Optional description of the category")
+    is_active = models.BooleanField(default=True, help_text="Whether this category is currently active")
+    order = models.IntegerField(default=0, help_text="Display order (lower numbers appear first)")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Event Category"
+        verbose_name_plural = "Event Categories"
+        ordering = ['order', 'code']
+
+    def __str__(self):
+        return f"{self.display_name} ({self.code})"
+
+    @classmethod
+    def get_choices(cls):
+        """Get active categories as choices for form fields"""
+        return [(cat.code, cat.display_name) for cat in cls.objects.filter(is_active=True).order_by('order')]
+
+    @classmethod
+    def populate_defaults(cls):
+        """Populate default category choices if none exist"""
+        if not cls.objects.exists():
+            default_categories = [
+                ('workshop', 'Workshop', 'Hands-on learning sessions', 1),
+                ('seminar', 'Seminar', 'Educational presentations and talks', 2),
+                ('competition', 'Competition', 'Competitive events and contests', 3),
+                ('hackathon', 'Hackathon', 'Coding competitions and innovation challenges', 4),
+                ('meetup', 'Meetup', 'Networking and community gatherings', 5),
+                ('conference', 'Conference', 'Large-scale professional events', 6),
+                ('other', 'Other', 'Miscellaneous events', 7),
+            ]
+            for code, display_name, description, order in default_categories:
+                cls.objects.create(
+                    code=code, 
+                    display_name=display_name, 
+                    description=description,
+                    order=order
+                )
+
 class Event(models.Model):
-    EVENT_TYPE_CHOICES = [
-        ('workshop', 'Workshop'),
-        ('seminar', 'Seminar'),
-        ('competition', 'Competition'),
-        ('hackathon', 'Hackathon'),
-        ('meetup', 'Meetup'),
-        ('conference', 'Conference'),
-        ('other', 'Other'),
-    ]
+    # Remove hardcoded EVENT_TYPE_CHOICES - now using dynamic EventCategory
     
     PAYMENT_TYPE_CHOICES = [
         ('free', 'Free'),
@@ -37,26 +74,15 @@ class Event(models.Model):
         ('online', 'Online'),
     ]
     
-    # Club Association (nullable initially for migration)
-    club = models.ForeignKey(
-        'clubs.Club', 
-        on_delete=models.CASCADE, 
-        related_name='events',
-        null=True,
-        blank=True,
-        help_text="Club organizing this event"
-    )
-    
     event_name = models.CharField(max_length=200, help_text="Name of the event")
     description = models.TextField(help_text="Detailed description of the event")
     event_date = models.DateTimeField(help_text="Date and time of the event")
     event_end_date = models.DateField(null=True, blank=True, help_text="End date of the event (for multi-day events)")
     start_time = models.TimeField(null=True, blank=True, help_text="Start time of the event")
     end_time = models.TimeField(null=True, blank=True, help_text="End time of the event")
-    event_type = models.CharField(
-        max_length=20, 
-        choices=EVENT_TYPE_CHOICES, 
-        default='other',
+    event_type = models.ForeignKey(
+        EventCategory,
+        on_delete=models.CASCADE,
         help_text="Type of event"
     )
     payment_type = models.CharField(

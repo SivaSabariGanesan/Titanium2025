@@ -515,7 +515,7 @@ class ApplyForPremiumMembershipView(APIView):
 
 # ========== Dynamic Choices API Views ==========
 
-from .dynamic_choices_models import Year, Department
+from .dynamic_choices_models import Year, Department, Category
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -533,14 +533,32 @@ def get_department_choices(request):
     category = request.query_params.get('category', None)
     
     if category:
-        departments = Department.objects.filter(is_active=True, category=category).order_by('order')
+        departments = Department.objects.filter(
+            is_active=True, 
+            category__code=category,
+            category__is_active=True
+        ).order_by('order')
     else:
-        departments = Department.objects.filter(is_active=True).order_by('category', 'order')
+        departments = Department.objects.filter(is_active=True).order_by('category__order', 'order')
     
     data = [{
         'code': dept.code,
         'full_name': dept.full_name,
-        'category': dept.category
+        'category': dept.category.code
     } for dept in departments]
+    
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_category_choices(request):
+    """Get all active category choices"""
+    categories = Category.objects.filter(is_active=True).order_by('order')
+    
+    data = [{
+        'code': cat.code,
+        'display_name': cat.display_name
+    } for cat in categories]
     
     return Response(data, status=status.HTTP_200_OK)

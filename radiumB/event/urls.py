@@ -62,4 +62,13 @@ urlpatterns = [
     # Form responses endpoints (Admin only)
     path('events/<int:event_id>/form-responses/', views.EventFormResponsesAPIView.as_view(), name='event_form_responses'),
     path('events/<int:event_id>/participants/<int:participant_id>/form-response/', views.ParticipantFormResponseAPIView.as_view(), name='participant_form_response'),
+    
+    # ========== EVENT CATEGORY ENDPOINTS ==========
+    # Public endpoint to get all categories
+    path('events/categories/', views.EventCategoryListAPIView.as_view(), name='event_categories'),
+    
+    # Admin endpoints for category management
+    path('events/categories/create/', views.EventCategoryCreateAPIView.as_view(), name='event_category_create'),
+    path('events/categories/<int:category_id>/update/', views.EventCategoryUpdateAPIView.as_view(), name='event_category_update'),
+    path('events/categories/<int:category_id>/delete/', views.EventCategoryDeleteAPIView.as_view(), name='event_category_delete'),
 ]

@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     UserProfileView, UserProfileCompletionView, UserListView, UserRoleUpdateView,
     MembershipStatusView, ClaimDevMembershipView, MembershipBenefitsView, PremiumSlotsListView,
-    ApplyForPremiumMembershipView, get_year_choices, get_department_choices
+    ApplyForPremiumMembershipView, get_year_choices, get_department_choices, get_category_choices
 )
 
 
@@ -25,5 +25,6 @@ urlpatterns = [
     
     # Dynamic choices endpoints
     path('choices/years/', get_year_choices, name='year_choices'),
+    path('choices/categories/', get_category_choices, name='category_choices'),
     path('choices/departments/', get_department_choices, name='department_choices'),
 ]

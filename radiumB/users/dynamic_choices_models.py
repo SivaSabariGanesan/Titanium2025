@@ -1,8 +1,44 @@
 """
-Dynamic choices models for Year and Department
-These models allow admins to manage year and department options from the admin panel
+Dynamic choices models for Year, Category, and Department
+These models allow admins to manage year, category, and department options from the admin panel
 """
 from django.db import models
+
+
+class Category(models.Model):
+    """Model to store department category choices dynamically"""
+    code = models.CharField(max_length=10, unique=True, help_text="Category code (e.g., 'UG', 'PG', 'PhD')")
+    display_name = models.CharField(max_length=50, help_text="Display name (e.g., 'Undergraduate', 'Postgraduate')")
+    is_active = models.BooleanField(default=True, help_text="Whether this category is currently active")
+    order = models.IntegerField(default=0, help_text="Display order (lower numbers appear first)")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+        ordering = ['order', 'code']
+        app_label = 'academic'
+
+    def __str__(self):
+        return f"{self.display_name} ({self.code})"
+
+    @classmethod
+    def get_choices(cls):
+        """Get active categories as choices for form fields"""
+        return [(cat.code, cat.display_name) for cat in cls.objects.filter(is_active=True).order_by('order')]
+
+    @classmethod
+    def populate_defaults(cls):
+        """Populate default category choices if none exist"""
+        if not cls.objects.exists():
+            default_categories = [
+                ('UG', 'Undergraduate', 1),
+                ('PG', 'Postgraduate', 2),
+                ('PhD', 'Doctoral', 3),
+            ]
+            for code, display_name, order in default_categories:
+                cls.objects.create(code=code, display_name=display_name, order=order)
 
 
 class Year(models.Model):
@@ -49,14 +85,9 @@ class Department(models.Model):
     """Model to store department choices dynamically"""
     code = models.CharField(max_length=50, unique=True, help_text="Department code (e.g., 'CSE', 'ECE')")
     full_name = models.CharField(max_length=255, help_text="Full department name")
-    category = models.CharField(
-        max_length=50,
-        choices=[
-            ('UG', 'Undergraduate'),
-            ('PG', 'Postgraduate'),
-            ('PhD', 'Doctoral'),
-        ],
-        default='UG',
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
         help_text="Department category"
     )
     is_active = models.BooleanField(default=True, help_text="Whether this department is currently active")
@@ -67,7 +98,7 @@ class Department(models.Model):
     class Meta:
         verbose_name = "Department"
         verbose_name_plural = "Departments"
-        ordering = ['category', 'order', 'code']
+        ordering = ['category__order', 'order', 'code']
         app_label = 'academic'
 
     def __str__(self):
@@ -76,40 +107,52 @@ class Department(models.Model):
     @classmethod
     def get_choices(cls):
         """Get active departments as choices for form fields"""
-        return [(dept.code, dept.full_name) for dept in cls.objects.filter(is_active=True).order_by('category', 'order')]
+        return [(dept.code, dept.full_name) for dept in cls.objects.filter(is_active=True).order_by('category__order', 'order')]
 
     @classmethod
-    def get_choices_by_category(cls, category):
-        """Get active departments filtered by category"""
-        return [(dept.code, dept.full_name) for dept in cls.objects.filter(is_active=True, category=category).order_by('order')]
+    def get_choices_by_category(cls, category_code):
+        """Get active departments filtered by category code"""
+        return [(dept.code, dept.full_name) for dept in cls.objects.filter(
+            is_active=True, 
+            category__code=category_code,
+            category__is_active=True
+        ).order_by('order')]
 
     @classmethod
     def populate_defaults(cls):
         """Populate default department choices if none exist"""
         if not cls.objects.exists():
+            # Ensure categories exist first
+            Category.populate_defaults()
+            
+            # Get category instances
+            ug_category = Category.objects.get(code='UG')
+            pg_category = Category.objects.get(code='PG')
+            phd_category = Category.objects.get(code='PhD')
+            
             default_departments = [
                 # Undergraduate Departments
-                ('Aero', 'Aeronautical Engineering', 'UG', 1),
-                ('Auto', 'Automobile Engineering', 'UG', 2),
-                ('BME', 'Biomedical Engineering', 'UG', 3),
-                ('Biotech', 'Biotechnology', 'UG', 4),
-                ('Chem', 'Chemical Engineering', 'UG', 5),
-                ('Civil', 'Civil Engineering', 'UG', 6),
-                ('CSE', 'Computer Science & Engineering', 'UG', 7),
-                ('CSE_CS', 'Computer Science & Engineering (Cyber Security)', 'UG', 8),
-                ('CSBS', 'Computer Science & Business Systems', 'UG', 9),
-                ('CSD', 'Computer Science & Design', 'UG', 10),
-                ('EEE', 'Electrical & Electronics Engineering', 'UG', 11),
-                ('ECE', 'Electronics & Communication Engineering', 'UG', 12),
-                ('FT', 'Food Technology', 'UG', 13),
-                ('IT', 'Information Technology', 'UG', 14),
-                ('AIML', 'Artificial Intelligence & Machine Learning', 'UG', 15),
-                ('AIDS', 'Artificial Intelligence & Data Science', 'UG', 16),
-                ('Mech', 'Mechanical Engineering', 'UG', 17),
-                ('MCT', 'Mechatronics Engineering', 'UG', 18),
-                ('Robotics', 'Robotics & Automation', 'UG', 19),
-                ('HS', 'Humanities & Sciences', 'UG', 20),
-                ('MS', 'Management Studies', 'UG', 21),
+                ('Aero', 'Aeronautical Engineering', ug_category, 1),
+                ('Auto', 'Automobile Engineering', ug_category, 2),
+                ('BME', 'Biomedical Engineering', ug_category, 3),
+                ('Biotech', 'Biotechnology', ug_category, 4),
+                ('Chem', 'Chemical Engineering', ug_category, 5),
+                ('Civil', 'Civil Engineering', ug_category, 6),
+                ('CSE', 'Computer Science & Engineering', ug_category, 7),
+                ('CSE_CS', 'Computer Science & Engineering (Cyber Security)', ug_category, 8),
+                ('CSBS', 'Computer Science & Business Systems', ug_category, 9),
+                ('CSD', 'Computer Science & Design', ug_category, 10),
+                ('EEE', 'Electrical & Electronics Engineering', ug_category, 11),
+                ('ECE', 'Electronics & Communication Engineering', ug_category, 12),
+                ('FT', 'Food Technology', ug_category, 13),
+                ('IT', 'Information Technology', ug_category, 14),
+                ('AIML', 'Artificial Intelligence & Machine Learning', ug_category, 15),
+                ('AIDS', 'Artificial Intelligence & Data Science', ug_category, 16),
+                ('Mech', 'Mechanical Engineering', ug_category, 17),
+                ('MCT', 'Mechatronics Engineering', ug_category, 18),
+                ('Robotics', 'Robotics & Automation', ug_category, 19),
+                ('HS', 'Humanities & Sciences', ug_category, 20),
+                ('MS', 'Management Studies', ug_category, 21),
             ]
             for code, full_name, category, order in default_departments:
                 cls.objects.create(code=code, full_name=full_name, category=category, order=order)
